@@ -7,7 +7,6 @@
 create database realty
 /*
   таблица хранит информацию о квартирах
-	добавить этаж, площадь квартиры , число комнат
 */
 create table flats
 (
@@ -25,6 +24,14 @@ create table flats
   цена
   */
     price integer,
+  /*
+  номер этажа
+  */
+    flevel integer,
+  /*
+  общая площадь
+  */
+    square integer,
   /*
   флаг - о - в продаже, 1 - объявление снято
   */
@@ -49,6 +56,14 @@ create table houses
   номер дома
   */
     hnum integer,
+ /*
+  число подъездов
+  */
+    npods integer,
+ /*
+  материал дома
+  */
+    htype char(255),
   /*
   номер корпуса
   */
