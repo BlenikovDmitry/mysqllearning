@@ -33,4 +33,29 @@ create table houses
 );
 
 alter table houses
-add constraint housepk primary key(street,hnum,pod); 
+add constraint housepk primary key(street,hnum,corp);
+
+create table flats
+(
+/* уникальный id квартиры */
+	id integer primary key,
+/* улица */
+    street char(255),
+/* номер дома */
+    hnum integer,
+/* номер корпуса */
+    fcorp char(5),
+/* число этажей */
+    flevel integer,
+/* общая площадь */
+    square float,
+/* число комнат */
+    nkomn integer,
+/* цена */
+    price integer,
+/* флаг(0 - не продается, 1 - продается)*/
+    flag bool,
+/* внешний ключ, чтобы не добавтьб фейковый адрес */
+    foreign key (street,hnum,fcorp) references houses(street,hnum,corp)
+); 
+
