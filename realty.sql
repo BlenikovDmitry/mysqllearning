@@ -1,104 +1,36 @@
+create database realty;
 
-/*
-база данных будущего проекта - базы квартир для нужд агентского бизнеса
-*/
-
-
-create database realty
-/*
-  таблица хранит информацию о квартирах
-*/
-create table flats
+/* таблица содержит данные о районах */
+create table districts
 (
-  /* уникальный номер */
-	id integer primary key,
-  /* улица */
-    street char(255),
-  /* номер дома */
-    hnum integer,
-  /*
-  номер корпуса
-  */
-    pod integer,
-  /*
-  цена
-  */
-    price integer,
-  /*
-  номер этажа
-  */
-    flevel integer,
-  /*
-  общая площадь
-  */
-    square integer,
-  /*
-  флаг - о - в продаже, 1 - объявление снято
-  */
-    flag bool,
-  /*
-  подтягиваем данные их таблицы о доме(потребуется для статистики)
-  */
-    foreign key (street,hnum,pod) references houses(street,hnum,pod)
+/* название района */
+    dist_name char(100) primary key,
+/* средняя цена(предполагается, что будет доабвляться из внешних систем) */
+    avprice integer
 );
-/*
-таблица хранит информацию о домах
-добавить число подъездов, тип дома(кирпич/плита и тд) 
 
-*/
+
+/* таблица содержит данные о домах */
 create table houses
 (
-  /*
-  адрес дома
-  */
+/* улица */
 	street char(255),
-  /*
-  номер дома
-  */
+/* номер дома */
     hnum integer,
- /*
-  число подъездов
-  */
+/* номер корпуса*/
+    corp char(5),
+/* число подъездов */
     npods integer,
- /*
-  материал дома
-  */
+/*тип перекрытий(панель/кирпич и тд)*/
     htype char(255),
-  /*
-  номер корпуса
-  */
-    pod integer,
-  /*
-  число этажей
-  */
+/* число этажей */
     levels integer,
-  /*
-  год постройки
-  */
+/* год постройки */
     year_boulding integer,
-  /*
-  район - подтягивается из таблицы районов
-  */
+/* район */
     dist char(100),
     foreign key (dist) references districts(dist_name)
 );
-/*
-способ задания составного первичного клоча, чтобы таблицу дома связать с таблицей квартиры
-*/
-alter table houses
-add constraint housepk primary key(street,hnum,pod)
 
-alter table flats
-add nkomn integer
-/*
-  таблица содержит информацию о районах
-*/
-create table districts
-(
-  /* нназвание района */
-	dist_name char(100) primary key,
-  /*
-    средняя цена в районе(планирую рассчитывать и добавлять из внешних систем)
-  */
-    avprice integer
-);
+alter table houses
+add constraint housepk primary key(street,hnum,pod); 
