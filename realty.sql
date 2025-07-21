@@ -58,4 +58,6 @@ create table flats
 /* внешний ключ, чтобы не добавтьб фейковый адрес */
     foreign key (street,hnum,fcorp) references houses(street,hnum,corp)
 ); 
-
+/* в процессе работы потребовалась дата внесения в реестр, чтобы отслеживать длительность экспозиции */
+alter table flats 
+add date_insert date
