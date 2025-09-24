@@ -61,3 +61,9 @@ create table flats
 /* в процессе работы потребовалась дата внесения в реестр, чтобы отслеживать длительность экспозиции */
 alter table flats 
 add date_insert date
+/* добавляем число объяв по каждому дому и каждому району */
+alter table houses add count_offers int check(count_offers > -1);
+select * from houses;
+
+alter table districts drop column count_offers;
+alter table districts add count_offers int check(count_offers > -1);
