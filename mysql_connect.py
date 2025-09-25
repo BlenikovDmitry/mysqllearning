@@ -16,29 +16,24 @@ def check_uniq_houses():
     #приводим к одинаковым типам данных значимые для нас столбцы
     res_df = pd.DataFrame(res_list, columns=['Улица','Дом', 'Корпус', 'Подъездов', 'Тип перекрытий', 'Этажность','Год постройки', 'Район'])
     res_df['Улица'] = res_df['Улица'].astype(str)
-    res_df['Дом'] = res_df['Дом'].astype(int)
-    res_df['Корпус'] = res_df['Корпус'].astype(int)
+    res_df['Дом'] = res_df['Дом'].astype(str)
+    res_df['Корпус'] = res_df['Корпус'].astype(str)
     upd['Улица'] = upd['Улица'].astype(str)
-    upd['Дом'] = upd['Дом'].astype(int)
-    upd['Корпус'] = upd['Корпус'].astype(int)
-'''
-нужно как - то хитро смерджить, чтобы остались только те записи, которые есть и в upd и  в res_df
-потом убрать их из upd
-из upd убрать заголовки и индекс и запиать результат в ex.csv
-после можно применить запрос на обновление (лучше все таки через mysql так как придется отклчать проверку на ссылочную целостность)
-без этого работать не будет
-'''
+    upd['Дом'] = upd['Дом'].astype(str)
+    upd['Корпус'] = upd['Корпус'].astype(str)
 
     print(upd)
     print(res_df)
-    result_tmp = pd.merge(upd, res_df, how='inner')
-    print(result_tmp)
-    '''rows_to_drop = result_tmp.index
-    upd = upd.drop(rows_to_drop)
-
-    print(res_df)
-    upd.to_csv('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/ex1.csv', encoding = 'utf-8', sep = ';')'''
-
+    #сюда запихали все записи, которые есть в обоих датафреймах
+    tmp_df = pd.DataFrame(columns = ['Улица','Дом', 'Корпус', 'Подъездов', 'Тип перекрытий', 'Этажность','Год постройки', 'Район'])
+    for index, row in upd.iterrows():
+        for index1, row1 in res_df.iterrows():
+            if row['Улица'] == row1['Улица'] and row['Дом']  == row1['Дом'] and row['Корпус'] == row1['Корпус']:
+                tmp_df = tmp_df._append(row, ignore_index=True)
+    #здесь результирующий dataframe
+    result_df = pd.concat([upd,tmp_df]).drop_duplicates(keep=False)
+    #print(result_df)
+    result_df.to_csv('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/ex1.csv', encoding = 'utf-8', sep = ';')
 
 '''
 скелет клиента бд + пример заливки данных в бд из файла
